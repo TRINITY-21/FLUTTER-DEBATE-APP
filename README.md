@@ -3,7 +3,7 @@
 A new Flutter project.
 
 
-![alt text](https://github.com/TRINITY-21/FLUTTER_UI_CHALLENGE/blob/master/debate.PNG)
+![alt text](https://github.com/TRINITY-21/FLUTTER-DEBATE-APP/blob/master/debate.PNG)
 
 ## Getting Started
 
