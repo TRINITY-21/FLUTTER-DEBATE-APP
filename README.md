@@ -2,6 +2,9 @@
 
 A new Flutter project.
 
+
+![alt text](https://github.com/TRINITY-21/FLUTTER_UI_CHALLENGE/blob/master/debate.PNG)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
