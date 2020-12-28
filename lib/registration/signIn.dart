@@ -1,5 +1,6 @@
 // import 'package:debate/registerModel.dart';
 import 'package:debate/home.dart';
+import 'package:debate/pages/debate.dart';
 // import 'package:debate/networkHandler/network_handler.dart';
 import 'package:debate/registration/model/registerModel.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class _SignInState extends State<SignIn> {
     final user = Provider.of<RegisterModel>(context);
 
     return Scaffold(
-      backgroundColor: Colors.teal.withOpacity(1),
+      backgroundColor: Colors.red[900].withOpacity(1),
       body: Container(
         decoration: BoxDecoration(
             color: Colors.white,
@@ -86,7 +87,7 @@ class _SignInState extends State<SignIn> {
                   hintStyle: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w300, fontSize: 14),
                   prefixIcon:
-                      Icon(Icons.email, color: Colors.teal.withOpacity(0.5)),
+                      Icon(Icons.email, color: Colors.red[900].withOpacity(1)),
                   border: InputBorder.none,
                   fillColor: Colors.grey.withOpacity(0.5),
                 ),
@@ -121,7 +122,7 @@ class _SignInState extends State<SignIn> {
                   hintStyle: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w300, fontSize: 14),
                   prefixIcon:
-                      Icon(Icons.lock, color: Colors.teal.withOpacity(0.5)),
+                      Icon(Icons.lock, color: Colors.red[900].withOpacity(1)),
                   border: InputBorder.none,
                   fillColor: Colors.grey.withOpacity(0.5),
                 ),
@@ -137,11 +138,11 @@ class _SignInState extends State<SignIn> {
               child: RaisedButton(
                 onPressed: () {
                   user.login();
-                  
+
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                      MaterialPageRoute(builder: (context) => Debate()));
                 },
-                color: Color(0xFFFE6AA8).withOpacity(0.3),
+                color: Color(0xFFECA1C1).withOpacity(1),
                 child: Text("login", style: TextStyle(fontSize: 20)),
                 textColor: Colors.white,
               ),
@@ -182,7 +183,7 @@ class _SignInState extends State<SignIn> {
                   fontWeight: FontWeight.w400,
                   fontSize: 10,
                   textStyle: TextStyle(
-                    color: Colors.teal,
+                    color: Colors.red[900],
                   )),
             ),
           ),

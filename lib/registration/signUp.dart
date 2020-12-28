@@ -19,7 +19,7 @@ class _SignUpState extends State<SignUp> {
     final user = Provider.of<RegisterModel>(context);
 
     return Scaffold(
-      backgroundColor: Colors.teal.withOpacity(1),
+      backgroundColor: Colors.red[900].withOpacity(1),
       body: Container(
         decoration: BoxDecoration(
             color: Colors.white,
@@ -81,7 +81,7 @@ class _SignUpState extends State<SignUp> {
                   hintStyle: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w300, fontSize: 14),
                   prefixIcon:
-                      Icon(Icons.person, color: Colors.teal.withOpacity(0.5)),
+                      Icon(Icons.person, color: Colors.red[900].withOpacity(1)),
                   border: InputBorder.none,
                   fillColor: Colors.grey.withOpacity(0.5),
                 ),
@@ -117,7 +117,7 @@ class _SignUpState extends State<SignUp> {
                   hintStyle: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w300, fontSize: 14),
                   prefixIcon:
-                      Icon(Icons.email, color: Colors.teal.withOpacity(0.5)),
+                      Icon(Icons.email, color: Colors.red[900].withOpacity(1)),
                   border: InputBorder.none,
                   fillColor: Colors.grey.withOpacity(0.5),
                 ),
@@ -154,14 +154,19 @@ class _SignUpState extends State<SignUp> {
                   hintStyle: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w300, fontSize: 14),
                   prefixIcon:
-                      Icon(Icons.lock, color: Colors.teal.withOpacity(0.5)),
+                      Icon(Icons.lock, color: Colors.red[900].withOpacity(1)),
                   border: InputBorder.none,
                   fillColor: Colors.grey.withOpacity(0.5),
                 ),
               ),
             ),
           ),
+
+          // SizedBox(width: 20),
+         
+
           SizedBox(height: 10),
+      
           Padding(
             padding: EdgeInsets.only(left: 100.0, right: 100.0),
             child: Container(
@@ -175,12 +180,26 @@ class _SignUpState extends State<SignUp> {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => SignIn()));
                       },
-                      color: Color(0xFFFE7D6A).withOpacity(0.3),
+                      color: Color(0xFFFE7D6A).withOpacity(1),
                       child: Text("Register", style: TextStyle(fontSize: 20)),
                       textColor: Colors.white,
                     ),
             ),
           ),
+          // SizedBox(height:5),
+           InkWell(
+             onTap:(){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SignIn()));
+             },
+              child: Container(
+              margin: const EdgeInsets.only(left:300),
+              padding: const EdgeInsets.all(15.0),
+              child: Text("Sign In", 
+              style:  GoogleFonts.notoSans(
+                          fontWeight: FontWeight.w300, fontSize: 18),),
+          ),
+           ),
 
           Divider(
             height: 10,

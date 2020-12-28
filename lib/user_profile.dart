@@ -1,5 +1,8 @@
+import 'package:debate/api/registerModel.dart';
 import 'package:debate/registration/model/registerModel.dart';
 import 'package:flutter/material.dart';
+
+import 'networkHandler/network_handler.dart';
 
 class UserProfilePage extends StatefulWidget {
   @override
@@ -7,26 +10,27 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  // RegisterModel registerModel = RegisterModel();
+  RegisterModel registerModel = RegisterModel();
   // CurrentUserModel currentUserModel = CurrentUserModel();
-  // NetworkHandler networkHandler = NetworkHandler();
-  // RegistersModel registersModel = RegistersModel();
+  NetworkHandler networkHandler = NetworkHandler();
+  RegistersModel registersModel = RegistersModel();
 
-  bool isLoaded = false;
-  // void getCurrentUser() async {
-  //   final currentUser = await networkHandler.get('/api/users/auth');
+  bool isLoaded = true;
+  void getCurrentUser() async {
+    final currentUser = await networkHandler.get('/api/users/auth');
 
-  //   setState(() {
-  //     registersModel = RegistersModel.fromJson(currentUser);
-  //     isLoaded = true;
-  //     print(registersModel.id);
-  //   });
-  // }
+    setState(() {
+      registersModel = RegistersModel.fromJson(currentUser);
+      isLoaded = true;
+      print(registersModel.id);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    // getCurrentUser();
+    getCurrentUser();
+    print("ok");
   }
 
   @override
@@ -59,11 +63,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text("registersModel.name",
+                              Text(registersModel.name,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 16.0)),
                               SizedBox(height: 5.0),
-                              Text("registersModel.email",
+                              Text(registersModel.email,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 16.0)),
                               SizedBox(height: 5.0),

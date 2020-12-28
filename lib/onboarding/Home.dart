@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Colors.red[900],
       body: Container(
           decoration:BoxDecoration(
           color: Colors.white,
@@ -93,7 +93,7 @@ class _HomeState extends State<Home> {
               child: Container(
                 decoration: BoxDecoration(
                 // borderRadius: BorderRadius.only(topLeft:Radius.circular(34)),
-                   //color:Colors.teal,
+                   //color:Colors.red[900],
                 ),
                 alignment: Alignment.center,
                 height: Platform.isIOS ? 30 : 50,

@@ -1,7 +1,6 @@
 import 'package:debate/api/fetchDebateModel.dart';
 import 'package:debate/api/listDebatesModel.dart';
 import 'package:debate/networkHandler/network_handler.dart';
-import 'package:debate/pages/debate.dart';
 import 'package:debate/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,15 +9,15 @@ import 'package:debate/pages/readMore.dart';
 import 'package:debate/pages/uploadDebate.dart';
 import 'package:simple_moment/simple_moment.dart';
 
-class HomePage extends StatefulWidget {
+class Debate extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _DebateState createState() => _DebateState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _DebateState extends State<Debate> with SingleTickerProviderStateMixin {
   bool isLoaded = false;
-
+  DateTime dateTime;
+  // DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
   NetworkHandler networkHandler = NetworkHandler();
   ListDebatesModel debateModel = ListDebatesModel();
   FetchDebateModel fetchDebates = FetchDebateModel();
@@ -104,24 +103,15 @@ class _HomePageState extends State<HomePage>
                   ),
                 ),
                 SizedBox(height: 10.0),
-
                 SizedBox(height: 10.0),
                 Row(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Debate()));
-                        },
-                        child: Text(
-                          "Latest Debate",
-                          style: GoogleFonts.notoSans(
-                              fontWeight: FontWeight.w500, fontSize: 20),
-                        ),
+                      child: Text(
+                        "Latest Debate",
+                        style: GoogleFonts.notoSans(
+                            fontWeight: FontWeight.w500, fontSize: 20),
                       ),
                     ),
                     SizedBox(width: 100),
@@ -202,7 +192,7 @@ class _HomePageState extends State<HomePage>
                                               Text(debate.topic,
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 15,
+                                                      fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w500)),
                                             ]),
@@ -230,37 +220,20 @@ class _HomePageState extends State<HomePage>
                                       //   child: Text("By January 2019, that number had grown to 49 out of the 55 AU member states, of w ",
                                       //    style:TextStyle(color:Colors.white, fontSize:20, fontWeight: FontWeight.w300)),
                                       // ),
-                                      SizedBox(height: 5),
+                                      SizedBox(height: 0),
 
                                       Padding(
                                         padding: const EdgeInsets.all(15.0),
                                         child: Row(children: [
                                           Row(
                                             children: [
-                                              Text("Created by:",
+                                              Text("Created by: ",
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 5,
+                                                      fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               Text(debate.writer.name,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 5,
-                                                      fontWeight:
-                                                          FontWeight.w400)),
-                                            ],
-                                          ),
-                                          SizedBox(width: 1),
-                                          Row(
-                                            children: [
-                                              Text("Created on:",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 5,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              Text(debate.createdAt,
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 15,
@@ -268,7 +241,33 @@ class _HomePageState extends State<HomePage>
                                                           FontWeight.w400)),
                                             ],
                                           ),
+                                          SizedBox(width: 10),
                                         ]),
+                                      ),
+
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 15.0),
+                                        child: Row(
+                                          children: [
+                                            Text("Created on: ",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            Text(
+                                                Moment.fromDateTime(
+                                                        DateTime.parse(
+                                                            debate.createdAt))
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                          ],
+                                        ),
                                       ),
 
                                       Padding(
@@ -290,52 +289,6 @@ class _HomePageState extends State<HomePage>
                                     ]))));
                       }),
                 ),
-
-                //SizedBox(height: 10.0,),
-                // Padding(
-                //     padding: EdgeInsets.only(left: 15),
-                //     child: TabBar(
-                //       controller: _controller,
-                //       isScrollable: true,
-                //       indicatorColor: Colors.transparent,
-                //       labelColor: Colors.black,
-                //       unselectedLabelColor: Colors.grey.withOpacity(0.5),
-                //       labelStyle: GoogleFonts.notoSans(
-                //         fontSize: 16.0,
-                //         fontWeight: FontWeight.w700,
-                //       ),
-                //       unselectedLabelStyle: GoogleFonts.notoSans(
-                //         fontSize: 12.0,
-                //         fontWeight: FontWeight.w500,
-                //       ),
-                //       tabs: [
-                //         Tab(
-                //           child: Text("FEATURED"),
-                //         ),
-                //         Tab(
-                //           child: Text("COMBO"),
-                //         ),
-                //         Tab(
-                //           child: Text("FAVORITES"),
-                //         ),
-                //         Tab(
-                //           child: Text("RECOMMENDED"),
-                //         ),
-                //       ],
-                //     )
-                //     ),
-                // Container(
-                //     height: MediaQuery.of(context).size.height - 450,
-                //     child: TabBarView(
-                //       controller: _controller,
-                //       children: [
-                //         // FoodTab(),
-                //         // FoodTab(),
-                //         // FoodTab(),
-                //         // FoodTab(),
-                //       ],
-                //     )
-                //     ),
               ]),
             )
           : Center(child: CircularProgressIndicator()),
