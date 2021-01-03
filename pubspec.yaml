@@ -28,6 +28,7 @@ dependencies:
   json_serializable:
   flutter_secure_storage: 
   image_picker: 
+  flutter_dropdown: ^0.0.8
   json_annotation:
   build_runner:
   cached_network_image: 

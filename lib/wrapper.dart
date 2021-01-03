@@ -2,6 +2,7 @@ import 'package:debate/api/registerModel.dart';
 import 'package:debate/networkHandler/network_handler.dart';
 import 'package:debate/onboarding/Home.dart';
 import 'package:debate/home.dart';
+import 'package:debate/pages/debate.dart';
 import 'package:debate/registration/model/registerModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -23,7 +24,7 @@ class _WrapperState extends State<Wrapper> {
   bool isLoaded = true;
 
   FlutterSecureStorage storage = FlutterSecureStorage();
- void getCurrentUser() async {
+  void getCurrentUser() async {
     final currentUser = await networkHandler.get('/api/users/auth');
 
     setState(() {
@@ -34,26 +35,24 @@ class _WrapperState extends State<Wrapper> {
   }
 
   // if exists
- @override
+  @override
   void initState() {
     super.initState();
     getCurrentUser();
   }
-
 
   @override
   Widget build(BuildContext context) {
     // final isAuth = storage.read(key:'token');
 
     // final isLoggedIn = reg
-    
-  //  print("isAuth $isAuth");
+
+    //  print("isAuth $isAuth");
 
     if (registersModel.id == null) {
       return Home();
     } else {
-      return HomePage();
+      return Debate();
     }
   }
 }
-

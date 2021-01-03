@@ -1,8 +1,9 @@
 import 'package:debate/api/registerModel.dart';
 import 'package:debate/registration/model/registerModel.dart';
 import 'package:flutter/material.dart';
-
+import 'package:debate/pages/debate.dart';
 import 'networkHandler/network_handler.dart';
+import 'package:debate/pages/contest.dart';
 
 class UserProfilePage extends StatefulWidget {
   @override
@@ -30,7 +31,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
   void initState() {
     super.initState();
     getCurrentUser();
-    print("ok");
   }
 
   @override
@@ -80,71 +80,33 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     ),
                     Divider(color: Colors.white),
                     InkWell(
-                      // onTap: () {
-                      //   Navigator.push(context,
-                      //       MaterialPageRoute(builder: (context) => Cart()));
-                      // },
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Contest()));
+                      },
                       child: ListTile(
-                        leading:
-                            Icon(Icons.shopping_cart, color: Color(0xFF909090)),
-                        title: Text('Your Items ordered',
+                        leading: Icon(Icons.content_paste_sharp,
+                            color: Color(0xFF909090)),
+                        title: Text('Contests',
                             style: TextStyle(color: Colors.white)),
                       ),
                     ),
                     InkWell(
-                      // onTap: () {
-                      //   Navigator.push(context,MaterialPageRoute(
-                      //     builder:(context) =>(
-                      //       Favorite()
-
-                      //     )
-                      //   ));
-                      // },
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (Debate())));
+                      },
                       child: ListTile(
-                        leading: Icon(Icons.favorite_border,
-                            color: Color(0xFF909090)),
-                        title: Text('Favorite items',
+                        leading: Icon(Icons.book, color: Color(0xFF909090)),
+                        title: Text('Debates',
                             style: TextStyle(color: Colors.white)),
                       ),
                     ),
                     ListTile(
-                      leading:
-                          Icon(Icons.access_time, color: Color(0xFF909090)),
-                      title: Text('Time watched',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                    ListTile(
-                      leading:
-                          Icon(Icons.video_library, color: Color(0xFF909090)),
-                      title: Text('Get App Premium',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                    ListTile(
-                      leading:
-                          Icon(Icons.monetization_on, color: Color(0xFF909090)),
-                      title: Text('Paid memberships',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.supervisor_account,
-                          color: Color(0xFF909090)),
-                      title: Text('Switch account',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.warning, color: Color(0xFF909090)),
-                      title: Text('Pending delivery',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                    Divider(color: Colors.white),
-                    ListTile(
-                      leading: Icon(Icons.settings, color: Color(0xFF909090)),
-                      title: Text('Settings',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.help, color: Color(0xFF909090)),
-                      title: Text('Help & feedback',
+                      leading: Icon(Icons.article, color: Color(0xFF909090)),
+                      title: Text('Articles',
                           style: TextStyle(color: Colors.white)),
                     ),
                   ],

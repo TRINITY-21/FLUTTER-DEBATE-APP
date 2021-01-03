@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage>
                                   builder: (context) => Debate()));
                         },
                         child: Text(
-                          "Latest Debate",
+                          "Latest Debates",
                           style: GoogleFonts.notoSans(
                               fontWeight: FontWeight.w500, fontSize: 20),
                         ),

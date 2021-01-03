@@ -10,17 +10,45 @@ class ListDebatesModel {
   String pic;
   RegistersModel writer;
   String createdAt;
+  String name;
+  String issue_area;
   String updatedAt;
   bool approved;
   int view_counts;
   String filePath;
+  String debate_article;
+  String leaders_vision;
+  String summary;
+  String heading;
+  String gender;
+  String pics;
+  String age;
+  String video;
 
   @JsonKey(name: '_id')
   String id;
-  
 
   ListDebatesModel(
-      {this.filePath, this.approved, this.topic, this.createdAt, this.updatedAt, this.body, this.id, this.pic, this.view_counts, this.writer});
+      {this.filePath,
+      this.age,
+      this.leaders_vision,
+      this.gender,
+      this.summary,
+      this.pics,
+      this.heading,
+      this.approved,
+      this.topic,
+      this.createdAt,
+      this.updatedAt,
+      this.body,
+      this.id,
+      this.debate_article,
+      this.pic,
+      this.view_counts,
+      this.issue_area,
+      this.name,
+      this.video,
+      this.writer});
 
   factory ListDebatesModel.fromJson(Map<String, dynamic> json) =>
       _$ListDebatesModelFromJson(json);

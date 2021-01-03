@@ -4,21 +4,41 @@ import 'package:debate/networkHandler/network_handler.dart';
 import 'package:debate/pages/debate.dart';
 import 'package:debate/user_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 
-class UploadDebate extends StatefulWidget {
+class UploadCritique extends StatefulWidget {
+  String critiqueId;
+
+  UploadCritique({@required this.critiqueId});
+
   @override
-  _UploadDebateState createState() => _UploadDebateState();
+  _UploadCritiqueState createState() => _UploadCritiqueState();
 }
 
-class _UploadDebateState extends State<UploadDebate>
+class _UploadCritiqueState extends State<UploadCritique>
     with SingleTickerProviderStateMixin {
   bool circular = false;
   bool isLoaded = false;
+  String gender;
+  String issuearea;
+  Person selectedPerson;
+
+  List<Person> persons = [
+    Person(
+        gender: "Education",
+        url: "https://images.unsplash.com/photo-1555952517-2e8e729e0b44"),
+    Person(
+        gender: "Economic",
+        url: "https://images.unsplash.com/photo-1555952517-2e8e729e0b44"),
+    Person(
+        gender: "Other",
+        url: "https://images.unsplash.com/photo-1555952517-2e8e729e0b44"),
+  ];
 
   TextEditingController _about = TextEditingController();
   TextEditingController _dob = TextEditingController();
@@ -42,12 +62,11 @@ class _UploadDebateState extends State<UploadDebate>
     });
   }
 
-  void uploadDebate() async {
+  void uploadLV() async {
     var dataToSubmit = ListDebatesModel(
         topic: _title.text, body: _about.text, writer: registersModel);
     var res = await networkHandler.post(
-        '/api/debate-article/add-debate-article',
-        json.encode(dataToSubmit.toJson()));
+        '/api/critique/add-critique', json.encode(dataToSubmit.toJson()));
 
     print(res);
 
@@ -61,6 +80,7 @@ class _UploadDebateState extends State<UploadDebate>
   @override
   void initState() {
     super.initState();
+    selectedPerson = persons.first;
     getCurrentUser();
   }
 
@@ -325,7 +345,7 @@ class _UploadDebateState extends State<UploadDebate>
     return TextFormField(
       controller: _profession,
       validator: (value) {
-        if (value.isEmpty) return "Profession can't be empty";
+        if (value.isEmpty) return "Heading can't be empty";
 
         return null;
       },
@@ -343,8 +363,8 @@ class _UploadDebateState extends State<UploadDebate>
           Icons.person,
           color: Colors.green,
         ),
-        labelText: "Profession",
-        helperText: "Profession can't be empty",
+        labelText: "Heading",
+        helperText: "Heading  can't be empty",
         hintText: "Full Stack Developer",
       ),
     );
@@ -383,7 +403,7 @@ class _UploadDebateState extends State<UploadDebate>
     return TextFormField(
       controller: _title,
       validator: (value) {
-        if (value.isEmpty) return "Title can't be empty";
+        if (value.isEmpty) return "name can't be empty";
 
         return null;
       },
@@ -401,7 +421,7 @@ class _UploadDebateState extends State<UploadDebate>
           Icons.title,
           color: Colors.green,
         ),
-        labelText: "Title",
+        labelText: "Name",
         helperText: "It can't be empty",
         hintText: "Flutter Developer",
       ),
@@ -412,7 +432,7 @@ class _UploadDebateState extends State<UploadDebate>
     return TextFormField(
       controller: _about,
       validator: (value) {
-        if (value.isEmpty) return "Body can't be empty";
+        if (value.isEmpty) return "Summary can't be empty";
 
         return null;
       },
@@ -427,8 +447,8 @@ class _UploadDebateState extends State<UploadDebate>
           color: Colors.orange,
           width: 2,
         )),
-        labelText: "Body",
-        helperText: "Writeabout your opinion",
+        labelText: "Summary",
+        helperText: "Write about your opinion",
         hintText: "I am Dev Stack",
       ),
     );
@@ -490,7 +510,7 @@ class _UploadDebateState extends State<UploadDebate>
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
                   child: Text(
-                    "DEBATE",
+                    "THINKERS CRITIQUE",
                     style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w800, fontSize: 27),
                   ),
@@ -504,16 +524,57 @@ class _UploadDebateState extends State<UploadDebate>
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
                       children: <Widget>[
-                        // nameTextField(),
-                        // SizedBox(
-                        //   height: 20,
-                        // ),
                         titleTextField(),
-
+                        SizedBox(
+                          height: 20,
+                        ),
+                        nameTextField(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        professionTextField(),
+                        dobField(),
+                        SizedBox(
+                          height: 20,
+                        ),
                         aboutTextField(),
                         SizedBox(
                           height: 20,
                         ),
+                        Text("Gender"),
+                        DropDown<String>(
+                          items: <String>["Male", "Female", "Other"],
+                          initialValue: "Female",
+                          hint: Text("Select gender",
+                              style: TextStyle(color: Colors.red)),
+                          onChanged: (value) {
+                            // print(value);
+                            setState(() {
+                              gender = value;
+                              print(gender);
+                            });
+                          },
+                        ),
+                        Text("Issue Area"),
+                        DropDown<Person>(
+                          items: persons,
+//                initialValue: selectedPerson,
+                          hint: Text("Select"),
+                          initialValue: persons.first,
+                          onChanged: (Person p) {
+                            print(p?.gender);
+                            setState(() {
+                              selectedPerson = p;
+                            });
+                          },
+                          isCleared: selectedPerson == null,
+                          customWidgets:
+                              persons.map((p) => buildDropDownRow(p)).toList(),
+                          isExpanded: true,
+                        ),
+                        Text(
+                            "Selected person's gender is: ${selectedPerson?.gender ?? "None"}"),
+                        SizedBox(height: 5),
                         imageProfile(),
                         SizedBox(
                           height: 20,
@@ -526,16 +587,6 @@ class _UploadDebateState extends State<UploadDebate>
                         SizedBox(
                           height: 20,
                         ),
-
-                        // dobField(),
-                        // SizedBox(
-                        //   height: 20,
-                        // ),
-                        // titleTextField(),
-                        // SizedBox(
-                        //   height: 20,
-                        // ),
-
                         InkWell(
                           onTap: () async {
                             setState(() {
@@ -543,13 +594,21 @@ class _UploadDebateState extends State<UploadDebate>
                             });
                             if (_globalkey.currentState.validate()) {
                               var dataToSubmit = ListDebatesModel(
-                                  topic: _title.text,
+                                  name: _title.text,
+                                  age: _dob.text,
+                                  summary: _about.text,
+                                  gender: gender,
+                                  issue_area: selectedPerson?.gender,
+                                  video: _name.text,
+                                  leaders_vision: widget.critiqueId,
+                                  heading: _profession.text,
+
                                   // filePath: _imageFile.path,
-                                  body: _about.text,
+
                                   writer: registersModel);
 
                               var res = await networkHandler.post(
-                                  '/api/debate-article/add-debate-article',
+                                  '/api/critique/add-critique',
                                   json.encode(dataToSubmit.toJson()));
 
                               print(res);
@@ -562,7 +621,7 @@ class _UploadDebateState extends State<UploadDebate>
                                 if (_imageFile.path != null) {
                                   var imageResponse =
                                       await networkHandler.patchImage(
-                                          "/api/debate-article/upload",
+                                          "/api/critique/upload",
                                           _imageFile.path);
 
                                   print('image response $imageResponse');
@@ -620,4 +679,23 @@ class _UploadDebateState extends State<UploadDebate>
           : Center(child: CircularProgressIndicator()),
     );
   }
+
+  Row buildDropDownRow(Person person) {
+    return Row(
+      children: <Widget>[
+        Expanded(child: Text(person?.gender ?? "Select")),
+        CircleAvatar(
+          backgroundImage: NetworkImage(person.url),
+        ),
+      ],
+    );
+  }
+}
+
+class Person {
+  final String gender;
+  final String name;
+  final String url;
+
+  Person({this.name, this.gender, this.url});
 }

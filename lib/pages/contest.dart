@@ -5,39 +5,38 @@ import 'package:debate/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readmore/readmore.dart';
-import 'package:debate/pages/thesis.dart';
+import 'package:debate/pages/uploadCritique.dart';
 import 'package:debate/pages/uploadDebate.dart';
 import 'package:simple_moment/simple_moment.dart';
 
-class Debate extends StatefulWidget {
+class Contest extends StatefulWidget {
   @override
-  _DebateState createState() => _DebateState();
+  _ContestState createState() => _ContestState();
 }
 
-class _DebateState extends State<Debate> with SingleTickerProviderStateMixin {
+class _ContestState extends State<Contest> with SingleTickerProviderStateMixin {
   bool isLoaded = false;
   DateTime dateTime;
   // DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
   NetworkHandler networkHandler = NetworkHandler();
   ListDebatesModel debateModel = ListDebatesModel();
-  FetchDebateModel fetchDebates = FetchDebateModel();
+  FetchDebateModel fetchLV = FetchDebateModel();
   var moment = Moment.now();
 
-  fetchDebateArticle() async {
-    final debates =
-        await networkHandler.get('/api/debate-article/fetch-approved-debate');
-    print('Debates $debates');
+  fetchLeadersVision() async {
+    final leadersVision =
+        await networkHandler.get('/api/leaders-vision/fetch-leaders-vision');
+    print('Leaaders $leadersVision');
     setState(() {
-      fetchDebates = FetchDebateModel.fromJson(debates);
+      fetchLV = FetchDebateModel.fromJson(leadersVision);
       isLoaded = true;
-      print(fetchDebates.article);
+      print(fetchLV);
     });
   }
 
   @override
   void initState() {
-    fetchDebateArticle();
-    print("ok");
+    fetchLeadersVision();
     super.initState();
   }
 
@@ -109,12 +108,12 @@ class _DebateState extends State<Debate> with SingleTickerProviderStateMixin {
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0),
                       child: Text(
-                        "Latest Debate",
+                        "Leaders Vision",
                         style: GoogleFonts.notoSans(
                             fontWeight: FontWeight.w500, fontSize: 20),
                       ),
                     ),
-                    SizedBox(width: 100),
+                    SizedBox(width: 50),
                     Padding(
                       padding: const EdgeInsets.only(right: 20.0),
                       child: FlatButton(
@@ -123,7 +122,7 @@ class _DebateState extends State<Debate> with SingleTickerProviderStateMixin {
                               builder: (context) => UploadDebate()));
                         },
                         color: Colors.blue,
-                        child: Text("Upload Debate"),
+                        child: Text("Upload Leaders vision"),
                         hoverColor: Colors.red,
                         highlightColor: Colors.red,
                       ),
@@ -135,9 +134,9 @@ class _DebateState extends State<Debate> with SingleTickerProviderStateMixin {
                   height: 400.0,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount: fetchDebates.article.length,
+                      itemCount: fetchLV.leaders_vision.length,
                       itemBuilder: (BuildContext context, index) {
-                        ListDebatesModel debate = fetchDebates.article[index];
+                        ListDebatesModel debate = fetchLV.leaders_vision[index];
 
                         return Padding(
                             padding: EdgeInsets.only(
@@ -189,10 +188,10 @@ class _DebateState extends State<Debate> with SingleTickerProviderStateMixin {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               SizedBox(width: 5),
-                                              Text(debate.topic,
+                                              Text(debate.heading,
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 10,
+                                                      fontSize: 20,
                                                       fontWeight:
                                                           FontWeight.w500)),
                                             ]),
@@ -202,7 +201,7 @@ class _DebateState extends State<Debate> with SingleTickerProviderStateMixin {
                                       Padding(
                                         padding: const EdgeInsets.all(16.0),
                                         child: ReadMoreText(
-                                          debate.body,
+                                          debate.summary,
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 18,
@@ -233,7 +232,7 @@ class _DebateState extends State<Debate> with SingleTickerProviderStateMixin {
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold)),
-                                              Text(debate.writer.name,
+                                              Text(debate.name,
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 15,
@@ -278,12 +277,12 @@ class _DebateState extends State<Debate> with SingleTickerProviderStateMixin {
                                             Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        UploadThesis(
-                                                            debateId:
+                                                        UploadCritique(
+                                                            critiqueId:
                                                                 debate.id)));
                                           },
                                           color: Colors.blue,
-                                          child: Text("Add Thesis"),
+                                          child: Text("Add Critique"),
                                           hoverColor: Colors.red,
                                           highlightColor: Colors.red,
                                         ),

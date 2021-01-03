@@ -10,12 +10,15 @@ import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 
-class UploadDebate extends StatefulWidget {
+class UploadThesis extends StatefulWidget {
+  String debateId;
+
+  UploadThesis({@required this.debateId});
   @override
-  _UploadDebateState createState() => _UploadDebateState();
+  _UploadThesisState createState() => _UploadThesisState();
 }
 
-class _UploadDebateState extends State<UploadDebate>
+class _UploadThesisState extends State<UploadThesis>
     with SingleTickerProviderStateMixin {
   bool circular = false;
   bool isLoaded = false;
@@ -42,12 +45,11 @@ class _UploadDebateState extends State<UploadDebate>
     });
   }
 
-  void uploadDebate() async {
+  void uploadThesis() async {
     var dataToSubmit = ListDebatesModel(
         topic: _title.text, body: _about.text, writer: registersModel);
     var res = await networkHandler.post(
-        '/api/debate-article/add-debate-article',
-        json.encode(dataToSubmit.toJson()));
+        '/api/debate-article/add-thesis', json.encode(dataToSubmit.toJson()));
 
     print(res);
 
@@ -490,7 +492,7 @@ class _UploadDebateState extends State<UploadDebate>
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
                   child: Text(
-                    "DEBATE",
+                    "THESIS",
                     style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w800, fontSize: 27),
                   ),
@@ -504,13 +506,15 @@ class _UploadDebateState extends State<UploadDebate>
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
                       children: <Widget>[
-                        // nameTextField(),
+                        // titleTextField(),
                         // SizedBox(
                         //   height: 20,
                         // ),
-                        titleTextField(),
-
                         aboutTextField(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        nameTextField(),
                         SizedBox(
                           height: 20,
                         ),
@@ -543,13 +547,13 @@ class _UploadDebateState extends State<UploadDebate>
                             });
                             if (_globalkey.currentState.validate()) {
                               var dataToSubmit = ListDebatesModel(
-                                  topic: _title.text,
-                                  // filePath: _imageFile.path,
+                                  // topic: _title.text,
+                                  debate_article: widget.debateId,
                                   body: _about.text,
                                   writer: registersModel);
 
                               var res = await networkHandler.post(
-                                  '/api/debate-article/add-debate-article',
+                                  '/api/debate-article/add-thesis',
                                   json.encode(dataToSubmit.toJson()));
 
                               print(res);
