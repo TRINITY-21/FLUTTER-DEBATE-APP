@@ -1,5 +1,6 @@
 # debate
-Backend code here ->  
+##  debate app same as my MERN DEBATE APP (https://github.com/TRINITY-21/MERN-DEBATE_APP) ie mobile version of it 
+- [## Backend code here -> ](https://github.com/TRINITY-21/MERN-DEBATE_APP)
 
 A new Flutter project.
 
