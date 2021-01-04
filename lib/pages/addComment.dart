@@ -1,47 +1,29 @@
+import 'package:debate/api/fetchDebateModel.dart';
 import 'package:debate/api/listDebatesModel.dart';
 import 'package:debate/api/registerModel.dart';
 import 'package:debate/networkHandler/network_handler.dart';
+import 'package:debate/pages/articles.dart';
 import 'package:debate/pages/debate.dart';
 import 'package:debate/user_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 
-class UploadCritique extends StatefulWidget {
-  String critiqueId;
+class AddComment extends StatefulWidget {
+  String articleId;
 
-  UploadCritique({@required this.critiqueId});
-
+  AddComment({this.articleId});
   @override
-  _UploadCritiqueState createState() => _UploadCritiqueState();
+  _AddCommentState createState() => _AddCommentState();
 }
 
-class _UploadCritiqueState extends State<UploadCritique>
+class _AddCommentState extends State<AddComment>
     with SingleTickerProviderStateMixin {
   bool circular = false;
   bool isLoaded = false;
-  String gender;
-  String issuearea;
-  Person selectedPerson;
-
-  List<Person> persons = [
-    Person(
-      gender: "Education",
-      // url: "https://images.unsplash.com/photo-1555952517-2e8e729e0b44"
-    ),
-    Person(
-      gender: "Economic",
-      // url: "https://images.unsplash.com/photo-1555952517-2e8e729e0b44"
-    ),
-    Person(
-      gender: "Other",
-      // url: "https://images.unsplash.com/photo-1555952517-2e8e729e0b44"
-    ),
-  ];
 
   TextEditingController _about = TextEditingController();
   TextEditingController _dob = TextEditingController();
@@ -51,7 +33,8 @@ class _UploadCritiqueState extends State<UploadCritique>
   final ImagePicker _picker = ImagePicker();
   TextEditingController _profession = TextEditingController();
   TextEditingController _title = TextEditingController();
-
+  ListDebatesModel comments = ListDebatesModel();
+  FetchDebateModel fetchDebates = FetchDebateModel();
   RegistersModel registersModel = RegistersModel();
   NetworkHandler networkHandler = NetworkHandler();
 
@@ -65,16 +48,15 @@ class _UploadCritiqueState extends State<UploadCritique>
     });
   }
 
-  void uploadLV() async {
-    var dataToSubmit = ListDebatesModel(
-        topic: _title.text, body: _about.text, writer: registersModel);
-    var res = await networkHandler.post(
-        '/api/critique/add-critique', json.encode(dataToSubmit.toJson()));
+  void getComments() async {
+    var res = await networkHandler
+        .get('/api/article/getComments/' + widget.articleId);
 
     print(res);
 
     setState(() {
-      circular = true;
+      fetchDebates = FetchDebateModel.fromJson(res);
+      // circular = true;
 
       isLoaded = true;
     });
@@ -83,7 +65,7 @@ class _UploadCritiqueState extends State<UploadCritique>
   @override
   void initState() {
     super.initState();
-    selectedPerson = persons.first;
+    getComments();
     getCurrentUser();
   }
 
@@ -110,7 +92,7 @@ class _UploadCritiqueState extends State<UploadCritique>
                                 fontWeight: FontWeight.bold))),
                   )
                 : FittedBox(
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                     child: Image(
                       image: FileImage(File(_imageFile.path)),
                       fit: BoxFit.fill,
@@ -334,7 +316,7 @@ class _UploadCritiqueState extends State<UploadCritique>
           width: 2,
         )),
         prefixIcon: Icon(
-          Icons.video_library_outlined,
+          Icons.videocam,
           color: Colors.green,
         ),
         labelText: "Video url",
@@ -348,7 +330,7 @@ class _UploadCritiqueState extends State<UploadCritique>
     return TextFormField(
       controller: _profession,
       validator: (value) {
-        if (value.isEmpty) return "Heading can't be empty";
+        if (value.isEmpty) return "Profession can't be empty";
 
         return null;
       },
@@ -363,11 +345,11 @@ class _UploadCritiqueState extends State<UploadCritique>
           width: 2,
         )),
         prefixIcon: Icon(
-          Icons.bookmark,
+          Icons.person,
           color: Colors.green,
         ),
-        labelText: "Heading",
-        helperText: "Heading  can't be empty",
+        labelText: "Profession",
+        helperText: "Profession can't be empty",
         hintText: "Full Stack Developer",
       ),
     );
@@ -392,7 +374,7 @@ class _UploadCritiqueState extends State<UploadCritique>
           width: 2,
         )),
         prefixIcon: Icon(
-          Icons.date_range,
+          Icons.person,
           color: Colors.green,
         ),
         labelText: "Date Of Birth",
@@ -406,7 +388,7 @@ class _UploadCritiqueState extends State<UploadCritique>
     return TextFormField(
       controller: _title,
       validator: (value) {
-        if (value.isEmpty) return "name can't be empty";
+        if (value.isEmpty) return "Title can't be empty";
 
         return null;
       },
@@ -424,7 +406,7 @@ class _UploadCritiqueState extends State<UploadCritique>
           Icons.title,
           color: Colors.green,
         ),
-        labelText: "Name",
+        labelText: "Title",
         helperText: "It can't be empty",
         hintText: "Flutter Developer",
       ),
@@ -435,7 +417,7 @@ class _UploadCritiqueState extends State<UploadCritique>
     return TextFormField(
       controller: _about,
       validator: (value) {
-        if (value.isEmpty) return "Summary can't be empty";
+        if (value.isEmpty) return "Body can't be empty";
 
         return null;
       },
@@ -450,8 +432,8 @@ class _UploadCritiqueState extends State<UploadCritique>
           color: Colors.orange,
           width: 2,
         )),
-        labelText: "Summary",
-        helperText: "Write about your opinion",
+        labelText: "Body",
+        helperText: "Writeabout your opinion",
         hintText: "I am Dev Stack",
       ),
     );
@@ -505,7 +487,7 @@ class _UploadCritiqueState extends State<UploadCritique>
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
                   child: Text(
-                    "UPLOAD",
+                    "ADD",
                     style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w800, fontSize: 27),
                   ),
@@ -513,12 +495,32 @@ class _UploadCritiqueState extends State<UploadCritique>
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
                   child: Text(
-                    "THINKERS CRITIQUE",
+                    "COMMENT",
                     style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.w800, fontSize: 27),
                   ),
                 ),
                 SizedBox(height: 5.0),
+                Container(
+                    height: 250,
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: fetchDebates.comments.length,
+                        itemBuilder: (BuildContext context, index) {
+                          ListDebatesModel debate =
+                              fetchDebates.comments[index];
+
+                          return Card(
+                            child: ListTile(
+                              title: Text(debate.writer.name),
+                              // leading: CircleAvatar(
+                              //     backgroundImage: NetworkImage(
+                              //         'http://10.0.2.2:9000/' +
+                              //             debate.writer.image)),
+                              subtitle: Text(debate.comment),
+                            ),
+                          );
+                        })),
                 Container(
                   height: 500.0,
                   child: Form(
@@ -527,69 +529,40 @@ class _UploadCritiqueState extends State<UploadCritique>
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
                       children: <Widget>[
-                        titleTextField(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        nameTextField(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        professionTextField(),
-                        dobField(),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        // titleTextField(),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
                         aboutTextField(),
                         SizedBox(
                           height: 20,
                         ),
-                        Text("Gender"),
-                        DropDown<String>(
-                          items: <String>["Male", "Female", "Other"],
-                          initialValue: "Female",
-                          hint: Text("Select gender",
-                              style: TextStyle(color: Colors.red)),
-                          onChanged: (value) {
-                            // print(value);
-                            setState(() {
-                              gender = value;
-                              print(gender);
-                            });
-                          },
-                        ),
-//                         Text("Issue Area"),
-//                         DropDown<Person>(
-//                           items: persons,
-// //                initialValue: selectedPerson,
-//                           hint: Text("Select"),
-//                           initialValue: persons.first,
-//                           onChanged: (Person p) {
-//                             print(p?.gender);
-//                             setState(() {
-//                               selectedPerson = p;
-//                             });
-//                           },
-//                           isCleared: selectedPerson == null,
-//                           // customWidgets:
-//                           //     persons.map((p) => buildDropDownRow(p)).toList(),
-//                           // isExpanded: true,
-//                         ),
-//                         Text(
-//                             "Selected person's gender is: ${selectedPerson?.gender ?? "None"}"),
-                        SizedBox(height: 5),
-                        imageProfile(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        pdfUpload(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        docUpload(),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        // nameTextField(),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
+                        // imageProfile(),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
+                        // pdfUpload(),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
+                        // docUpload(),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
+
+                        // dobField(),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
+                        // titleTextField(),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
+
                         InkWell(
                           onTap: () async {
                             setState(() {
@@ -597,21 +570,13 @@ class _UploadCritiqueState extends State<UploadCritique>
                             });
                             if (_globalkey.currentState.validate()) {
                               var dataToSubmit = ListDebatesModel(
-                                  name: _title.text,
-                                  age: _dob.text,
-                                  summary: _about.text,
-                                  gender: gender,
-                                  // issue_area: selectedPerson.gender,
-                                  video: _name.text,
-                                  leaders_vision: widget.critiqueId,
-                                  heading: _profession.text,
-
-                                  // filePath: _imageFile.path,
-
+                                  // topic: _title.text,
+                                  article: widget.articleId,
+                                  comment: _about.text,
                                   writer: registersModel);
 
                               var res = await networkHandler.post(
-                                  '/api/critique/add-critique',
+                                  '/api/article/add-comment',
                                   json.encode(dataToSubmit.toJson()));
 
                               print(res);
@@ -621,35 +586,35 @@ class _UploadCritiqueState extends State<UploadCritique>
 
                               if (res.statusCode == 200 ||
                                   res.statusCode == 201) {
-                                if (_imageFile.path != null) {
-                                  var imageResponse =
-                                      await networkHandler.patchImage(
-                                          "/api/critique/upload",
-                                          _imageFile.path);
+                                // if (_imageFile.path != null) {
+                                //   var imageResponse =
+                                //       await networkHandler.patchImage(
+                                //           "/api/debate-article/upload",
+                                //           _imageFile.path);
 
-                                  print('image response $imageResponse');
+                                //   print('image response $imageResponse');
 
-                                  if (imageResponse.statusCode == 200) {
-                                    setState(() {
-                                      circular = false;
-                                    });
+                                // if (imageResponse.statusCode == 200) {
+                                //   setState(() {
+                                //     circular = false;
+                                //   });
 
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (context) => Debate()),
-                                        (route) => false);
-                                  }
-                                } else {
-                                  setState(() {
-                                    circular = false;
-                                  });
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) => Debate()),
-                                      (route) => false);
-                                }
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => AddComment()),
+                                    (route) => false);
+                                // }
+                              } else {
+                                setState(() {
+                                  circular = false;
+                                });
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => Articles()),
+                                    (route) => false);
                               }
                             }
+                            // }
                           },
                           child: Center(
                             child: Container(
@@ -682,23 +647,4 @@ class _UploadCritiqueState extends State<UploadCritique>
           : Center(child: CircularProgressIndicator()),
     );
   }
-
-//   Row buildDropDownRow(Person person) {
-//     return Row(
-//       children: <Widget>[
-//         Expanded(child: Text(person?.gender ?? "Select")),
-//         CircleAvatar(
-//           backgroundImage: NetworkImage(person.url),
-//         ),
-//       ],
-//     );
-//   }
-}
-
-class Person {
-  final String gender;
-  final String name;
-  final String url;
-
-  Person({this.name, this.gender, this.url});
 }

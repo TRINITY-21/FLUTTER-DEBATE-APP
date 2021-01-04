@@ -11,7 +11,8 @@ class ListDebatesModel {
   RegistersModel writer;
   String createdAt;
   String name;
-  String issue_area;
+  String comment;
+  // String issue_area;
   String updatedAt;
   bool approved;
   int view_counts;
@@ -22,6 +23,7 @@ class ListDebatesModel {
   String heading;
   String gender;
   String pics;
+  String article;
   String age;
   String video;
 
@@ -41,11 +43,13 @@ class ListDebatesModel {
       this.createdAt,
       this.updatedAt,
       this.body,
+      this.article,
       this.id,
+      this.comment,
       this.debate_article,
       this.pic,
       this.view_counts,
-      this.issue_area,
+      // this.issue_area,
       this.name,
       this.video,
       this.writer});

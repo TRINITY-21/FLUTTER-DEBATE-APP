@@ -1,4 +1,5 @@
 import 'package:debate/api/registerModel.dart';
+import 'package:debate/pages/articles.dart';
 import 'package:debate/registration/model/registerModel.dart';
 import 'package:flutter/material.dart';
 import 'package:debate/pages/debate.dart';
@@ -104,10 +105,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             style: TextStyle(color: Colors.white)),
                       ),
                     ),
-                    ListTile(
-                      leading: Icon(Icons.article, color: Color(0xFF909090)),
-                      title: Text('Articles',
-                          style: TextStyle(color: Colors.white)),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (Articles())));
+                      },
+                      child: ListTile(
+                        leading: Icon(Icons.article, color: Color(0xFF909090)),
+                        title: Text('Articles',
+                            style: TextStyle(color: Colors.white)),
+                      ),
                     ),
                   ],
                 ),

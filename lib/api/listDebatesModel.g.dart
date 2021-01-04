@@ -20,17 +20,18 @@ ListDebatesModel _$ListDebatesModelFromJson(Map<String, dynamic> json) {
     createdAt: json['createdAt'] as String,
     updatedAt: json['updatedAt'] as String,
     body: json['body'] as String,
+    comment: json['comment'] as String,
     id: json['_id'] as String,
     video: json['video'] as String,
     debate_article: json['debate_article'] as String,
+    article: json['article'] as String,
     pic: json['pic'] as String,
     view_counts: json['view_counts'] as int,
     writer: json['writer'] == null
         ? null
         : RegistersModel.fromJson(json['writer'] as Map<String, dynamic>),
-  )
-    ..name = json['name'] as String
-    ..issue_area = json['issue_area'] as String;
+  )..name = json['name'] as String;
+  // ..issue_area = json['issue_area'] as String;
 }
 
 Map<String, dynamic> _$ListDebatesModelToJson(ListDebatesModel instance) =>
@@ -39,14 +40,15 @@ Map<String, dynamic> _$ListDebatesModelToJson(ListDebatesModel instance) =>
       'body': instance.body,
       'pic': instance.pic,
       'writer': instance.writer,
+      'comment': instance.comment,
       'createdAt': instance.createdAt,
       'name': instance.name,
-      'issue_area': instance.issue_area,
+      // 'issue_area': instance.issue_area,
       'updatedAt': instance.updatedAt,
       'approved': instance.approved,
       'view_counts': instance.view_counts,
       'filePath': instance.filePath,
-      'debate_article': instance.debate_article,
+      'article': instance.article,
       'summary': instance.summary,
       'heading': instance.heading,
       'gender': instance.gender,
